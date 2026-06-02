@@ -1,32 +1,31 @@
 import { useState, useEffect } from 'react';
-import { 
-  Home as HomeIcon, 
-  Award, 
-  MessageSquare, 
-  User
+import {
+  Home as HomeIcon,
+  Award,
+  MessageSquare,
+  User,
+  BookOpen,
 } from 'lucide-react';
 import Onboarding from './components/Onboarding';
-import Dashboard from './components/Dashboard';
+import Dashboard  from './components/Dashboard';
 import Milestones from './components/Milestones';
-import Community from './components/Community';
-import Emergency from './components/Emergency';
-import Profile from './components/Profile';
-import Articles from './components/Articles';
-import Sickness from './components/Sickness';
+import Community  from './components/Community';
+import Emergency  from './components/Emergency';
+import Profile    from './components/Profile';
+import Articles   from './components/Articles';
+import Sickness   from './components/Sickness';
+import Courses    from './components/Courses';
 import { UserProfile } from './types';
 
 export default function App() {
-  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [profile,    setProfile]    = useState<UserProfile | null>(null);
   const [currentTab, setCurrentTab] = useState<string>('home');
 
   useEffect(() => {
     const saved = localStorage.getItem('mamahub_profile');
     if (saved) {
-      try {
-        setProfile(JSON.parse(saved));
-      } catch (e) {
-        console.error("Failed to parse cached profile config", e);
-      }
+      try { setProfile(JSON.parse(saved)); }
+      catch (e) { console.error('Failed to parse cached profile', e); }
     }
   }, []);
 
@@ -43,33 +42,42 @@ export default function App() {
   const handleTriggerEmergencyView = (guide: 'choking' | 'cpr' | 'fever') => {
     if (guide === 'choking') setCurrentTab('emergency-choking');
     else if (guide === 'cpr') setCurrentTab('emergency-cpr');
-    else if (guide === 'fever') setCurrentTab('emergency-fever');
+    else setCurrentTab('emergency-fever');
   };
 
-  if (!profile) {
-    return <Onboarding onComplete={handleSaveProfile} />;
-  }
+  if (!profile) return <Onboarding onComplete={handleSaveProfile} />;
 
   const isEmergency = currentTab.startsWith('emergency-');
+  const isSubPage   = currentTab === 'articles' || currentTab === 'sickness';
+
+  const NAV_TABS = [
+    { id: 'home',      icon: HomeIcon,    label: 'Home'      },
+    { id: 'learn',     icon: BookOpen,    label: 'Learn'     },
+    { id: 'milestones',icon: Award,       label: 'Milestones'},
+    { id: 'community', icon: MessageSquare, label: 'Community'},
+    { id: 'profile',   icon: User,        label: 'Profile'   },
+  ];
 
   return (
-    <div className="min-h-screen bg-[#f8f9ff] text-slate-800 flex flex-col relative">
-      
+    <div className="min-h-screen bg-[#faf8ff] text-slate-800 flex flex-col relative">
       <div className="flex-grow">
         {currentTab === 'home' && (
-          <Dashboard 
-            profile={profile} 
+          <Dashboard
+            profile={profile}
             onNavigateToEmergency={handleTriggerEmergencyView}
-            onNavigateToTab={(t) => setCurrentTab(t)}
+            onNavigateToTab={t => setCurrentTab(t)}
           />
         )}
-        {currentTab === 'milestones' && <Milestones profile={profile} />}
-        {currentTab === 'community' && <Community />}
-        {currentTab === 'articles' && <Articles />}
-        {currentTab === 'sickness' && <Sickness />}
+        {currentTab === 'learn' && (
+          <Courses profile={profile} onUpdateProfile={handleSaveProfile} />
+        )}
+        {currentTab === 'milestones'  && <Milestones profile={profile} />}
+        {currentTab === 'community'   && <Community />}
+        {currentTab === 'articles'    && <Articles />}
+        {currentTab === 'sickness'    && <Sickness />}
         {currentTab === 'profile' && (
-          <Profile 
-            profile={profile} 
+          <Profile
+            profile={profile}
             setProfile={handleSaveProfile}
             onNavigateToEmergency={handleTriggerEmergencyView}
           />
@@ -85,58 +93,41 @@ export default function App() {
         )}
       </div>
 
-      {/* Bottom nav — 4 tabs, hidden on emergency and sub-pages */}
-      {!isEmergency && currentTab !== 'articles' && currentTab !== 'sickness' && (
-        <nav className="fixed bottom-0 left-0 right-0 w-full z-40 bg-white border-t border-slate-100 shadow-lg flex justify-around items-center h-20 px-6 pb-safe max-w-md mx-auto">
-          
-          <button onClick={() => setCurrentTab('home')}
-            className={`flex flex-col items-center justify-center p-2 rounded-xl transition ${
-              currentTab === 'home' ? 'text-violet-700 font-extrabold scale-105' : 'text-slate-400 hover:text-violet-500'
-            }`}>
-            <HomeIcon className="w-5 h-5" />
-            <span className="text-[10px] mt-1 tracking-wider uppercase">Home</span>
-          </button>
-
-          <button onClick={() => setCurrentTab('milestones')}
-            className={`flex flex-col items-center justify-center p-2 rounded-xl transition ${
-              currentTab === 'milestones' ? 'text-violet-700 font-extrabold scale-105' : 'text-slate-400 hover:text-violet-500'
-            }`}>
-            <Award className="w-5 h-5" />
-            <span className="text-[10px] mt-1 tracking-wider uppercase">Milestone</span>
-          </button>
-
-          <button onClick={() => setCurrentTab('community')}
-            className={`flex flex-col items-center justify-center p-2 rounded-xl transition ${
-              currentTab === 'community' ? 'text-violet-700 font-extrabold scale-105' : 'text-slate-400 hover:text-violet-500'
-            }`}>
-            <MessageSquare className="w-5 h-5" />
-            <span className="text-[10px] mt-1 tracking-wider uppercase">Community</span>
-          </button>
-
-          <button onClick={() => setCurrentTab('profile')}
-            className={`flex flex-col items-center justify-center p-2 rounded-xl transition ${
-              currentTab === 'profile' ? 'text-violet-700 font-extrabold scale-105' : 'text-slate-400 hover:text-violet-500'
-            }`}>
-            <User className="w-5 h-5" />
-            <span className="text-[10px] mt-1 tracking-wider uppercase">Profile</span>
-          </button>
-
+      {/* Bottom nav — 5 tabs */}
+      {!isEmergency && !isSubPage && (
+        <nav className="fixed bottom-0 left-0 right-0 w-full z-40 bg-white/95 backdrop-blur border-t border-violet-100 shadow-[0_-4px_20px_rgba(109,40,217,0.06)] flex justify-around items-center h-20 px-2 pb-safe max-w-md mx-auto">
+          {NAV_TABS.map(({ id, icon: Icon, label }) => {
+            const active = currentTab === id;
+            return (
+              <button
+                key={id}
+                onClick={() => setCurrentTab(id)}
+                className={`flex flex-col items-center justify-center px-2 py-2 rounded-2xl transition-all duration-200 ${
+                  active ? 'text-violet-700' : 'text-slate-400 hover:text-violet-400'
+                }`}
+              >
+                <div className={`flex items-center justify-center w-9 h-6 rounded-full transition-all ${active ? 'bg-violet-100' : ''}`}>
+                  <Icon className="w-4.5 h-4.5" style={{ width: '18px', height: '18px' }} />
+                </div>
+                <span className={`text-[9px] mt-1 tracking-wide ${active ? 'font-extrabold' : 'font-semibold'}`}>{label}</span>
+              </button>
+            );
+          })}
         </nav>
       )}
 
-      {/* Back button for ribbon pages */}
-      {(currentTab === 'articles' || currentTab === 'sickness') && (
-        <div className="fixed bottom-0 left-0 right-0 w-full z-40 bg-white border-t border-slate-100 shadow-lg flex justify-center items-center h-16 max-w-md mx-auto">
+      {/* Back button for sub-pages */}
+      {isSubPage && (
+        <div className="fixed bottom-0 left-0 right-0 w-full z-40 bg-white/95 backdrop-blur border-t border-slate-100 shadow-lg flex justify-center items-center h-16 max-w-md mx-auto">
           <button
             onClick={() => setCurrentTab('home')}
-            className="flex items-center gap-2 text-violet-700 font-bold text-sm"
+            className="flex items-center gap-2 text-violet-700 font-bold text-sm px-6 py-2 rounded-full bg-violet-50 hover:bg-violet-100 transition"
           >
             <HomeIcon className="w-4 h-4" />
             Back to Home
           </button>
         </div>
       )}
-
     </div>
   );
 }

@@ -346,8 +346,8 @@ export default function Sickness() {
 
   if (selected) {
     return (
-      <div className="bg-[#f8f9ff] min-h-screen pb-28">
-        <header className="sticky top-0 bg-[#f8f9ff] border-b border-purple-100 px-5 h-14 flex items-center gap-3 z-40 shadow-sm">
+      <div className="bg-[#faf8ff] min-h-screen pb-28">
+        <header className="sticky top-0 bg-[#faf8ff] border-b border-purple-100 px-5 h-14 flex items-center gap-3 z-40 shadow-sm">
           <button onClick={() => setSelected(null)} className="p-1 rounded-full text-[#64568b] hover:bg-purple-100 transition">
             <ArrowLeft className="w-5 h-5" />
           </button>
@@ -443,10 +443,10 @@ export default function Sickness() {
   }
 
   return (
-    <div className="bg-[#f8f9ff] min-h-screen pb-28">
-      <header className="sticky top-0 bg-[#f8f9ff] border-b border-purple-100 px-5 pt-5 pb-3 z-40 shadow-sm">
+    <div className="bg-[#faf8ff] min-h-screen pb-28">
+      <header className="sticky top-0 bg-[#faf8ff] border-b border-purple-100 px-5 pt-5 pb-3 z-40 shadow-sm">
         <h1 className="font-extrabold text-lg text-[#1e1a23]">Sickness Guide</h1>
-        <p className="text-xs text-slate-400 mt-0.5">Tap any condition for a quick verified summary</p>
+        <p className="text-xs text-slate-400 mt-0.5">Tap a condition for a clinically-verified guide</p>
       </header>
 
       <div className="px-5 pt-4 space-y-4">

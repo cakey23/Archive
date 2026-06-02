@@ -16,12 +16,13 @@ import {
   Thermometer,
   FileText,
   X,
-  Droplets,
   Moon,
-  Baby,
-  Heart
+  Heart,
+  Sun
 } from 'lucide-react';
 import { UserProfile, Supplement } from '../types';
+import BabySizeCard from './BabySizeCard';
+import { getRecommendedCourses, calcPregnancyWeek, ALL_COURSES } from '../courseData';
 
 interface DashboardProps {
   profile: UserProfile;
@@ -41,6 +42,13 @@ interface LogEntry {
 const now = () => new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 const todayLabel = new Date().toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' });
 
+const getGreeting = () => {
+  const h = new Date().getHours();
+  if (h < 12) return { text: 'Good morning', icon: '☀️' };
+  if (h < 17) return { text: 'Good afternoon', icon: '🌤️' };
+  return { text: 'Good evening', icon: '🌙' };
+};
+
 export default function Dashboard({ profile, onNavigateToEmergency, onNavigateToTab }: DashboardProps) {
   const [supplements, setSupplements] = useState<Supplement[]>([
     { id: '1', name: 'Prenatal Multi-Vitamin', icon: '💊', taken: 1, target: 1, unit: 'Daily' },
@@ -54,26 +62,16 @@ export default function Dashboard({ profile, onNavigateToEmergency, onNavigateTo
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [holdIndex, setHoldIndex] = useState(0);
 
-  // ── DAILY TRACKER STATE ──
   const [trackerOpen, setTrackerOpen] = useState(false);
   const [trackerSheet, setTrackerSheet] = useState<'main' | 'feed' | 'diaper' | 'sleep' | 'mood' | 'food'>('main');
   const [logs, setLogs] = useState<LogEntry[]>([]);
 
-  // Feed sub-state
   const [feedType, setFeedType] = useState<'breast' | 'formula' | 'solid' | ''>('');
   const [feedAmount, setFeedAmount] = useState('');
   const [feedNote, setFeedNote] = useState('');
-
-  // Diaper sub-state
   const [diaperType, setDiaperType] = useState<'wet' | 'dirty' | 'both' | ''>('');
-
-  // Sleep sub-state
   const [sleepHours, setSleepHours] = useState('');
-
-  // Mood sub-state
   const [mood, setMood] = useState<'happy' | 'fussy' | 'unwell' | ''>('');
-
-  // Food sub-state
   const [foodName, setFoodName] = useState('');
   const [foodReaction, setFoodReaction] = useState<'great' | 'ok' | 'reaction' | ''>('');
 
@@ -166,13 +164,13 @@ export default function Dashboard({ profile, onNavigateToEmergency, onNavigateTo
     }
   ];
 
-  // Summary counts for the tracker tile
   const feedCount = logs.filter(l => l.type === 'feed').length;
   const diaperCount = logs.filter(l => l.type === 'diaper').length;
   const sleepLog = logs.find(l => l.type === 'sleep');
+  const greeting = getGreeting();
 
   return (
-    <div id="dashboard-view" className="bg-[#f8f9ff] min-h-screen pb-28 text-slate-900 select-none">
+    <div id="dashboard-view" className="bg-[#faf8ff] min-h-screen pb-28 text-slate-900 select-none">
 
       {/* Toast */}
       <AnimatePresence>
@@ -196,12 +194,10 @@ export default function Dashboard({ profile, onNavigateToEmergency, onNavigateTo
               transition={{ type: 'spring', damping: 28, stiffness: 300 }}
               className="fixed bottom-0 left-0 right-0 max-w-md mx-auto z-50 bg-white rounded-t-3xl shadow-2xl pb-8"
             >
-              {/* Sheet handle */}
               <div className="flex justify-center pt-3 pb-1">
                 <div className="w-10 h-1 bg-slate-200 rounded-full" />
               </div>
 
-              {/* MAIN SHEET */}
               {trackerSheet === 'main' && (
                 <div className="px-5 pt-2 pb-4">
                   <div className="flex items-center justify-between mb-1">
@@ -215,7 +211,6 @@ export default function Dashboard({ profile, onNavigateToEmergency, onNavigateTo
                     </button>
                   </div>
 
-                  {/* Quick log buttons */}
                   <div className="grid grid-cols-4 gap-3 mt-4 mb-5">
                     {[
                       { key: 'feed', emoji: '🍼', label: 'Feed' },
@@ -233,7 +228,6 @@ export default function Dashboard({ profile, onNavigateToEmergency, onNavigateTo
                     ))}
                   </div>
 
-                  {/* Today's summary strip */}
                   {logs.length > 0 && (
                     <div className="flex gap-3 mb-4 overflow-x-auto pb-1 no-scrollbar">
                       {feedCount > 0 && (
@@ -257,10 +251,9 @@ export default function Dashboard({ profile, onNavigateToEmergency, onNavigateTo
                     </div>
                   )}
 
-                  {/* Log entries */}
                   <div className="space-y-2 max-h-48 overflow-y-auto">
                     {logs.length === 0 ? (
-                      <p className="text-center text-xs text-slate-400 py-6">Nothing logged yet today — tap a button above to start</p>
+                      <p className="text-center text-xs text-slate-400 py-6">Nothing logged yet today — tap a button above to start ✨</p>
                     ) : logs.map(entry => (
                       <div key={entry.id} className="flex items-center gap-3 bg-slate-50 rounded-xl px-3 py-2.5">
                         <span className="text-xl">{entry.emoji}</span>
@@ -275,7 +268,6 @@ export default function Dashboard({ profile, onNavigateToEmergency, onNavigateTo
                 </div>
               )}
 
-              {/* FEED SHEET */}
               {trackerSheet === 'feed' && (
                 <div className="px-5 pt-2 pb-4">
                   <div className="flex items-center gap-3 mb-4">
@@ -326,7 +318,6 @@ export default function Dashboard({ profile, onNavigateToEmergency, onNavigateTo
                 </div>
               )}
 
-              {/* DIAPER SHEET */}
               {trackerSheet === 'diaper' && (
                 <div className="px-5 pt-2 pb-4">
                   <div className="flex items-center gap-3 mb-4">
@@ -360,7 +351,6 @@ export default function Dashboard({ profile, onNavigateToEmergency, onNavigateTo
                 </div>
               )}
 
-              {/* SLEEP SHEET */}
               {trackerSheet === 'sleep' && (
                 <div className="px-5 pt-2 pb-4">
                   <div className="flex items-center gap-3 mb-4">
@@ -389,7 +379,6 @@ export default function Dashboard({ profile, onNavigateToEmergency, onNavigateTo
                 </div>
               )}
 
-              {/* MOOD SHEET */}
               {trackerSheet === 'mood' && (
                 <div className="px-5 pt-2 pb-4">
                   <div className="flex items-center gap-3 mb-4">
@@ -424,7 +413,6 @@ export default function Dashboard({ profile, onNavigateToEmergency, onNavigateTo
                 </div>
               )}
 
-              {/* FOOD SHEET */}
               {trackerSheet === 'food' && (
                 <div className="px-5 pt-2 pb-4">
                   <div className="flex items-center gap-3 mb-4">
@@ -469,7 +457,6 @@ export default function Dashboard({ profile, onNavigateToEmergency, onNavigateTo
                   </button>
                 </div>
               )}
-
             </motion.div>
           </>
         )}
@@ -481,13 +468,16 @@ export default function Dashboard({ profile, onNavigateToEmergency, onNavigateTo
 
             {/* Header */}
             <header className="w-full top-0 sticky z-40 bg-white/95 backdrop-blur shadow-sm flex justify-between items-center px-6 h-16 border-b border-violet-100/60">
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3">
                 <div onClick={() => onNavigateToTab('profile')}
                   className="w-10 h-10 rounded-full bg-violet-100 overflow-hidden border-2 border-violet-200 cursor-pointer hover:opacity-90 transition">
                   <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEBMY7u8T2mdht7kH40pthZPXn5q9BDHR8WSG0N5Usj_UHHeObXtfjsJp3MZa01wPswhv3yeGlyjgnYIRELbpNy7bSe0-JZ1xnedxvfp4_HeMiEeQvhlvHLFzCkFUYNFeTe8oUIOmaBW79HNytaq4fSqNsSxtqtH1DlfAXX3vtxaknmEXmTErIRxv1OM-f-izlD-Wozs-6oE9dXGtHxh7meyHX0ponn3wkN8L5ugDdv6YNp2Qf8avaj_LV5_IRe_ogHM7wH6A4c9P7"
                     alt="Mama profile avatar" className="w-full h-full object-cover" />
                 </div>
-                <h1 className="text-sm font-bold text-violet-700">Good morning, {profile.name || 'Mama'}</h1>
+                <div>
+                  <p className="text-[10px] text-slate-400 font-medium">{greeting.text} {greeting.icon}</p>
+                  <h1 className="text-sm font-bold text-violet-700 leading-none">{profile.name || 'Mama'}</h1>
+                </div>
               </div>
               <div className="flex items-center gap-2">
                 <button className="p-2 rounded-full text-slate-500 hover:bg-slate-100 transition"
@@ -499,6 +489,91 @@ export default function Dashboard({ profile, onNavigateToEmergency, onNavigateTo
 
             <main className="max-w-md mx-auto px-6 py-6 space-y-8">
 
+              {/* Welcome banner — personalized by stage */}
+              <section className="bg-gradient-to-br from-violet-600 to-violet-700 rounded-3xl p-5 text-white shadow-lg shadow-violet-200 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -mr-8 -mt-8" />
+                <div className="absolute bottom-0 left-0 w-20 h-20 bg-white/5 rounded-full -ml-6 -mb-6" />
+                <div className="relative z-10">
+                  <p className="text-violet-200 text-xs font-semibold mb-1">
+                    {profile.stage === 'pregnant' ? '🤰 Expectant Mama' : `👶 Mama to ${profile.babyName || 'your baby'}`}
+                  </p>
+                  <h2 className="text-lg font-extrabold leading-snug mb-3">
+                    {profile.stage === 'pregnant'
+                      ? `${profile.currentMilestone ? `Week ${profile.currentMilestone.replace(' Weeks', '')} — ` : ''}Every day brings you closer 💜`
+                      : `${profile.babyName || 'Baby'} is growing so fast! 🌱`}
+                  </h2>
+                  <button onClick={() => setTrackerOpen(true)}
+                    className="bg-white/20 hover:bg-white/30 text-white text-xs font-bold px-4 py-2 rounded-full transition flex items-center gap-1.5 w-fit">
+                    <Heart className="w-3.5 h-3.5" />
+                    <span>Log today's moments</span>
+                  </button>
+                </div>
+              </section>
+
+              {/* ── Baby size card (pregnant users) ── */}
+              {profile.stage === 'pregnant' && profile.dueDate && (
+                <BabySizeCard profile={profile} compact />
+              )}
+
+              {/* ── Personalized tip ── */}
+              {(() => {
+                const tips: Record<string, { emoji: string; tip: string }> = {
+                  pregnant: { emoji: '💊', tip: 'Start taking your prenatal vitamins before bed to reduce nausea. DHA and folic acid are essential now.' },
+                  mama:     { emoji: '💡', tip: 'Skin-to-skin contact for even 15 minutes releases oxytocin — calming for both you and baby.' },
+                };
+                const t = tips[profile.stage] ?? tips.mama;
+                return (
+                  <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-100 rounded-2xl p-4 flex items-start gap-3">
+                    <span className="text-2xl shrink-0">{t.emoji}</span>
+                    <div>
+                      <p className="text-[10px] font-black uppercase tracking-widest text-amber-600 mb-0.5">Today's Tip</p>
+                      <p className="text-xs text-slate-700 leading-relaxed">{t.tip}</p>
+                    </div>
+                  </div>
+                );
+              })()}
+
+              {/* ── Recommended course ── */}
+              {(() => {
+                const pregnancyWeek = profile.dueDate ? calcPregnancyWeek(profile.dueDate) : undefined;
+                const recs = getRecommendedCourses(profile.stage, pregnancyWeek);
+                const courseProgress = profile.courseProgress ?? {};
+                const next = recs.find(c => (courseProgress[c.id] ?? 0) < 100) ?? recs[0];
+                if (!next) return null;
+                const prog = courseProgress[next.id] ?? 0;
+                return (
+                  <div onClick={() => onNavigateToTab('learn')}
+                    className="bg-white border border-violet-100 rounded-3xl p-5 shadow-sm cursor-pointer hover:border-violet-300 hover:shadow-md transition active:scale-[0.99]">
+                    <div className="flex items-start justify-between gap-3 mb-3">
+                      <div className="flex items-center gap-3">
+                        <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${next.colorFrom} ${next.colorTo} flex items-center justify-center text-2xl shadow-sm shrink-0`}>
+                          {next.emoji}
+                        </div>
+                        <div>
+                          <p className="text-[10px] font-black uppercase tracking-widest text-violet-600 mb-0.5">
+                            {prog > 0 ? 'Continue Learning' : '⭐ Recommended for You'}
+                          </p>
+                          <h3 className="font-extrabold text-sm text-slate-900 leading-tight">{next.title}</h3>
+                          <p className="text-[11px] text-slate-400 mt-0.5">{next.totalLessons} lessons · {next.estimatedHours}h</p>
+                        </div>
+                      </div>
+                      <ChevronRight className="w-4 h-4 text-slate-400 shrink-0 mt-1"/>
+                    </div>
+                    {prog > 0 && (
+                      <div>
+                        <div className="flex justify-between items-center mb-1">
+                          <span className="text-[10px] text-slate-400">Progress</span>
+                          <span className="text-[10px] font-extrabold text-violet-700">{prog}%</span>
+                        </div>
+                        <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                          <div className="h-full bg-violet-500 rounded-full transition-all duration-500" style={{ width: `${prog}%` }}/>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
+
               {/* Category Portals */}
               <section className="grid grid-cols-2 gap-4">
                 <div onClick={() => onNavigateToEmergency('choking')}
@@ -508,7 +583,7 @@ export default function Dashboard({ profile, onNavigateToEmergency, onNavigateTo
                   </div>
                   <div>
                     <h3 className="font-extrabold text-sm text-rose-800">Emergency</h3>
-                    <p className="text-[11px] text-rose-600 mt-0.5">Immediate Life Savings Tools</p>
+                    <p className="text-[11px] text-rose-600 mt-0.5">Choking, CPR & fever guides</p>
                   </div>
                 </div>
 
@@ -518,34 +593,33 @@ export default function Dashboard({ profile, onNavigateToEmergency, onNavigateTo
                     <Thermometer className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="font-extrabold text-sm text-teal-800">Sickness</h3>
-                    <p className="text-[11px] text-teal-600 mt-0.5">RSV, Croup, Rashes & more</p>
+                    <h3 className="font-extrabold text-sm text-teal-800">Sickness Guide</h3>
+                    <p className="text-[11px] text-teal-600 mt-0.5">RSV, croup, rashes & more</p>
                   </div>
                 </div>
 
                 <div onClick={() => triggerToast("Food & Supplements planner coming soon! 🍎")}
-                  className="col-span-2 bg-amber-50/50 hover:bg-amber-50 border border-amber-100 p-5 rounded-2xl cursor-pointer transition-all active:scale-[0.98] group flex items-center justify-between">
+                  className="col-span-2 bg-amber-50/60 hover:bg-amber-50 border border-amber-100 p-5 rounded-2xl cursor-pointer transition-all active:scale-[0.98] group flex items-center justify-between">
                   <div className="flex items-center gap-4">
                     <div className="w-11 h-11 bg-amber-100/60 rounded-xl flex items-center justify-center text-amber-700">
                       <Utensils className="w-5 h-5" />
                     </div>
                     <div>
                       <h4 className="font-bold text-sm text-amber-800">Food & Supplements</h4>
-                      <p className="text-[11px] text-amber-600 mt-0.5">Nutritional pathways for healthy milk / blood supply</p>
+                      <p className="text-[11px] text-amber-600 mt-0.5">Nutritional pathways for healthy milk &amp; blood supply</p>
                     </div>
                   </div>
                   <ChevronRight className="w-5 h-5 text-amber-400 group-hover:translate-x-1 transition-transform" />
                 </div>
               </section>
 
-              {/* ── RIBBON: Daily Tracker + Quick Access ── */}
+              {/* Ribbon: Daily Tracker + Quick Access */}
               <section>
                 <div className="flex justify-between items-center mb-3 pl-1">
                   <h2 className="text-xs font-bold text-slate-400 uppercase tracking-widest">Today & Quick Access</h2>
                 </div>
                 <div className="flex gap-3 overflow-x-auto pb-2 no-scrollbar -mx-1 px-1">
 
-                  {/* DAILY TRACKER TILE — first and most prominent */}
                   <button onClick={() => setTrackerOpen(true)}
                     className="flex-shrink-0 w-52 bg-gradient-to-br from-violet-600 to-violet-700 rounded-2xl p-4 text-left active:scale-[0.97] transition shadow-lg shadow-violet-200">
                     <div className="flex items-center justify-between mb-3">
@@ -568,7 +642,6 @@ export default function Dashboard({ profile, onNavigateToEmergency, onNavigateTo
                     )}
                   </button>
 
-                  {/* Articles tile */}
                   <button onClick={() => onNavigateToTab('articles')}
                     className="flex-shrink-0 w-44 bg-white border border-violet-100 rounded-2xl p-4 text-left hover:border-violet-300 hover:bg-violet-50 transition active:scale-[0.97]">
                     <div className="w-9 h-9 bg-violet-100 rounded-xl flex items-center justify-center mb-3">
@@ -578,7 +651,16 @@ export default function Dashboard({ profile, onNavigateToEmergency, onNavigateTo
                     <p className="text-[11px] text-slate-400 mt-1 leading-snug">AAP, CDC & Mayo Clinic — verified</p>
                   </button>
 
-                  {/* Sickness tile */}
+                  {/* Courses tile */}
+                  <button onClick={() => onNavigateToTab('learn')}
+                    className="flex-shrink-0 w-44 bg-white border border-purple-100 rounded-2xl p-4 text-left hover:border-purple-300 hover:bg-purple-50 transition active:scale-[0.97]">
+                    <div className="w-9 h-9 bg-purple-100 rounded-xl flex items-center justify-center mb-3">
+                      <BookOpen className="w-4 h-4 text-purple-600" />
+                    </div>
+                    <p className="font-bold text-sm text-slate-800 leading-tight">Courses</p>
+                    <p className="text-[11px] text-slate-400 mt-1 leading-snug">12 topics · {ALL_COURSES.reduce((s, c) => s + c.totalLessons, 0)} lessons</p>
+                  </button>
+
                   <button onClick={() => onNavigateToTab('sickness')}
                     className="flex-shrink-0 w-44 bg-white border border-teal-100 rounded-2xl p-4 text-left hover:border-teal-300 hover:bg-teal-50 transition active:scale-[0.97]">
                     <div className="w-9 h-9 bg-teal-100 rounded-xl flex items-center justify-center mb-3">
@@ -588,14 +670,13 @@ export default function Dashboard({ profile, onNavigateToEmergency, onNavigateTo
                     <p className="text-[11px] text-slate-400 mt-1 leading-snug">RSV, croup, rashes & more</p>
                   </button>
 
-                  {/* Community tile */}
                   <button onClick={() => onNavigateToTab('community')}
                     className="flex-shrink-0 w-44 bg-white border border-pink-100 rounded-2xl p-4 text-left hover:border-pink-300 hover:bg-pink-50 transition active:scale-[0.97]">
                     <div className="w-9 h-9 bg-pink-100 rounded-xl flex items-center justify-center mb-3">
                       <Award className="w-4 h-4 text-pink-600" />
                     </div>
                     <p className="font-bold text-sm text-slate-800 leading-tight">Community</p>
-                    <p className="text-[11px] text-slate-400 mt-1 leading-snug">Questions & real mom advice</p>
+                    <p className="text-[11px] text-slate-400 mt-1 leading-snug">Questions & real mama advice</p>
                   </button>
 
                 </div>
@@ -605,7 +686,7 @@ export default function Dashboard({ profile, onNavigateToEmergency, onNavigateTo
               <section className="space-y-3">
                 <div className="flex justify-between items-center pl-1">
                   <h2 className="text-base font-bold text-slate-800 uppercase tracking-widest">Learning Pathways</h2>
-                  <span className="text-xs font-semibold text-violet-700 cursor-pointer" onClick={() => setActiveLearnModule(true)}>View Manual</span>
+                  <span className="text-xs font-semibold text-violet-700 cursor-pointer" onClick={() => setActiveLearnModule(true)}>View Module</span>
                 </div>
                 <div onClick={() => setActiveLearnModule(true)}
                   className="relative bg-violet-950 rounded-3xl overflow-hidden shadow-xl aspect-[4/2.3] p-6 flex flex-col justify-end group cursor-pointer transition-transform duration-300 hover:scale-[1.01]">
@@ -637,7 +718,7 @@ export default function Dashboard({ profile, onNavigateToEmergency, onNavigateTo
                     return (
                       <div key={s.id} onClick={() => takeSupplement(s.id)}
                         className={`flex items-center gap-4 p-4 rounded-2xl bg-white border cursor-pointer hover:border-violet-200 transition-all ${isComplete ? 'border-violet-100 shadow-sm' : 'border-slate-100'}`}>
-                        <div className={`w-11 h-11 rounded-xl flex items-center justify-center text-lg transition-transform ${isComplete ? 'bg-violet-50 scale-95' : 'bg-[#e3e1ed]/30'}`}>
+                        <div className={`w-11 h-11 rounded-xl flex items-center justify-center text-lg transition-transform ${isComplete ? 'bg-violet-50 scale-95' : 'bg-[#f5f3ff]'}`}>
                           {s.icon}
                         </div>
                         <div className="flex-grow min-w-0">
@@ -646,7 +727,7 @@ export default function Dashboard({ profile, onNavigateToEmergency, onNavigateTo
                             <span className="text-xs font-mono font-medium text-violet-700 whitespace-nowrap ml-2">{s.taken} / {s.target} {s.unit}</span>
                           </div>
                           <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-                            <div className="h-full bg-violet-600 rounded-full transition-all duration-300" style={{ width: `${pct}%` }} />
+                            <div className="h-full bg-violet-500 rounded-full transition-all duration-300" style={{ width: `${pct}%` }} />
                           </div>
                         </div>
                         <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${isComplete ? 'bg-violet-700 border-violet-700 text-white' : 'border-slate-300'}`}>
@@ -659,7 +740,7 @@ export default function Dashboard({ profile, onNavigateToEmergency, onNavigateTo
                 <button onClick={handleBulkLog}
                   className="w-full py-4 bg-violet-700 hover:bg-violet-800 text-white font-bold rounded-xl shadow-md transition active:scale-95 flex items-center justify-center gap-2 text-sm">
                   <Plus className="w-5 h-5" />
-                  <span>Log Morning Supplement</span>
+                  <span>Mark All Supplements as Taken</span>
                 </button>
               </section>
 
@@ -683,7 +764,7 @@ export default function Dashboard({ profile, onNavigateToEmergency, onNavigateTo
                 <p className="text-violet-100 text-sm leading-relaxed">Mastering the medical mechanics, comfort binds, and physiological holds for secure newborn carries.</p>
               </div>
               <section className="space-y-4">
-                <h3 className="text-[#121c28] font-black text-sm tracking-widest pl-1 uppercase">Anatomical Anatomy</h3>
+                <h3 className="text-[#121c28] font-black text-sm tracking-widest pl-1 uppercase">Anatomy & Support</h3>
                 <div className="bg-white p-5 rounded-3xl border border-violet-100/50 space-y-2 shadow-sm">
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-full bg-violet-100 text-violet-700 flex items-center justify-center text-xs font-bold">1</div>
@@ -694,7 +775,7 @@ export default function Dashboard({ profile, onNavigateToEmergency, onNavigateTo
                 <div className="bg-white p-5 rounded-3xl border border-violet-100/50 space-y-2 shadow-sm">
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-full bg-violet-100 text-violet-700 flex items-center justify-center text-xs font-bold">2</div>
-                    <h4 className="font-bold text-sm text-[#121c28]">Oxytocin-Bond</h4>
+                    <h4 className="font-bold text-sm text-[#121c28]">Oxytocin Bond</h4>
                   </div>
                   <p className="text-slate-600 text-xs leading-relaxed">Skin-to-skin touch prompts an immediate rush of maternal bonding chemicals, calming baby heartbeat and body heat.</p>
                 </div>
@@ -726,7 +807,7 @@ export default function Dashboard({ profile, onNavigateToEmergency, onNavigateTo
               <section className="space-y-4 p-5 rounded-3xl bg-violet-50 border border-violet-100">
                 <div className="text-center pb-2">
                   <h4 className="font-extrabold text-sm text-[#121c28]">Check Your Carry Form</h4>
-                  <p className="text-[11px] text-violet-700 mt-1">Review indicators before every active carry.</p>
+                  <p className="text-[11px] text-violet-700 mt-1">Review each indicator before every active carry.</p>
                 </div>
                 <div className="space-y-3">
                   {[

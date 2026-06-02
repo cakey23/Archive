@@ -18,7 +18,6 @@ import {
 import { CommunityPost } from '../types';
 
 export default function Community() {
-  // Static community feed matching mockups
   const [posts, setPosts] = useState<CommunityPost[]>([
     {
       id: '1',
@@ -26,8 +25,8 @@ export default function Community() {
       avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA0ykossTn4kIXYSm8flSQVJ6ngJIVLZIeXveCUOoaF4vqbWkL0qFDzgCGcaZBrHNuVOlGgyqVbZgdngbzjKpKnpOZqhhzSeskElHaad_hUUrJhCibK1XwHcAzyaCWrpFiEHC212eFebcj9_jMtFYKPclD3CvTli7wjEWJo4ZCMigie3Zl2kSP2MAuNq3UXTXHrUnHC6B6mGnlX6VjgDmfuDmBpKdODqI358yrY50jYsAKMnm76Vf19YznqDSHDSPKPEO0Jdj3YPEpV',
       timeAgo: '2h ago',
       tag: '#SleepTraining',
-      title: "Finally got 6 hours of straight sleep! Here's what changed...",
-      body: "After three months of waking up every 45 minutes, we finally hit a breakthrough. I wanted to share the specific routine and white noise settings that actually made a difference for our little one. It wasn't just one thing, but a combination of timing and environment...",
+      title: "We finally got 6 hours of straight sleep — here's exactly what changed",
+      body: "After three months of waking up every 45 minutes, we hit a breakthrough this week. I wanted to share the specific routine and white noise settings that actually worked for our little one. It wasn't just one thing, but a combination of consistent timing, room temperature (68°F!), and a specific wind-down window. Happy to share more details in the comments.",
       upvotes: 142,
       commentsCount: 24,
       saved: false
@@ -39,7 +38,7 @@ export default function Community() {
       timeAgo: '5h ago',
       tag: '#PregnancyDiets',
       title: "Best iron-rich meal prep ideas for the second trimester?",
-      body: "Maintaining robust iron counts is essential to offset prenatal fatigue. I pulled together some delicious spinach recipes featuring direct vegetable pairings. Here is the active breakdown of our batch bowls...",
+      body: "My OB flagged low iron at my 20-week check. I've been trying to eat more spinach but it's hard to make it appetizing every day. Has anyone found recipes or batch-cook ideas that are actually delicious? Would love a community list we can all contribute to!",
       image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDwnMPOkRb1F0q0YOzTMa4WtUZflsMTI7KKteMiBq_VpccdvNP8BGDECarE3B0knkIzc-duqFlEqQiR6l3P5wVdc5TDWnpsmbNoe7joXq9t05toaAoVaWTawUGCaVJoNBepDNtlzrKOm4pAJesBFQVt48kePxAP36SsNdIL1vvzYLfJXCmWx_WkChqH2TqR6k7jyp2lRa78YYR3Y_eXiyWyYgAv3XPidaiYuWMJ9rVHS-a9sqDSyJv4xuKqkDnJwTglUtpFDcjkD5mM',
       upvotes: 89,
       commentsCount: 56,
@@ -51,44 +50,55 @@ export default function Community() {
       avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCsZGxYJrBeu2zt5Zklrs04LpaizKYlcFk1CdMtGR0zEBJj-_vFmvhNIwAo-ADvQGqUFwHaBvKtBvoT_z6_Pa4PIJ6SSZ3_uelBROGszPAybhCYmBs0enirzFOSdhCzLYKjGs_KIsdKs0uz7I4D2T5vgHAlGnL3H5EKl0AauCGY3Hn5N9Y5i8Xde0Ko2ztmtH5rbuTTeGKdsenxiT56BCgmJiaAle-M7Xqo46mL3S02Emiwib6S3MZJbRxuMpZ9_HYdZ9jV8taH-13n',
       timeAgo: '8h ago',
       tag: '#NewMom',
-      title: "To the mama who feels like she's failing today...",
-      body: "Just a reminder that you are the exact mother your baby needs. Social media is a highlight reel. If you're tired, if the house is a mess, and if you're doing your best—you are winning. Take a deep breath and give yourself grace...",
+      title: "To the mama who feels like she's failing today — you are not",
+      body: "Just a reminder that you are the exact mother your baby needs. Social media is a highlight reel. If you're tired, if the house is a mess, if you're eating cold food again — and you're still showing up for your baby — you are winning. Take a deep breath and give yourself grace today. We see you. 💜",
       upvotes: 201,
       commentsCount: 112,
+      saved: false
+    },
+    {
+      id: '4',
+      author: 'Priya_K',
+      avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA0ykossTn4kIXYSm8flSQVJ6ngJIVLZIeXveCUOoaF4vqbWkL0qFDzgCGcaZBrHNuVOlGgyqVbZgdngbzjKpKnpOZqhhzSeskElHaad_hUUrJhCibK1XwHcAzyaCWrpFiEHC212eFebcj9_jMtFYKPclD3CvTli7wjEWJo4ZCMigie3Zl2kSP2MAuNq3UXTXHrUnHC6B6mGnlX6VjgDmfuDmBpKdODqI358yrY50jYsAKMnm76Vf19YznqDSHDSPKPEO0Jdj3YPEpV',
+      timeAgo: '1d ago',
+      tag: '#MentalHealth',
+      title: "Postpartum anxiety is real — this is what helped me",
+      body: "No one told me I could feel so anxious after giving birth when I'd wanted this so badly. I want to share 3 things that genuinely helped me — talking to my OB honestly, a postpartum therapist referral through insurance, and honestly, this community. You don't have to white-knuckle through it alone.",
+      upvotes: 178,
+      commentsCount: 67,
       saved: false
     }
   ]);
 
-  // Tag filter state
   const tags = ['#AllPosts', '#NewMom', '#PregnancyDiets', '#SleepTraining', '#ToddlerTalk', '#MentalHealth'];
   const [selectedTag, setSelectedTag] = useState<string>('#AllPosts');
   const [feedMode, setFeedMode] = useState<'trending' | 'latest'>('trending');
 
-  // Comment drawers & active write configurations
   const [commentingPost, setCommentingPost] = useState<CommunityPost | null>(null);
   const [commentText, setCommentText] = useState<string>('');
   const [mockComments, setMockComments] = useState<{ [key: string]: string[] }>({
     '1': [
-      "Agree so much! White noise has been our literal sleep savior.",
-      "Are you using continuous brown noise or standard waves?"
+      "White noise has been our literal sleep savior too!",
+      "The 68°F tip is real — we finally cracked it by turning the AC down."
     ],
     '2': [
-      "That beet salad looks absolutely gorgeous! Can you post the vinaigrette recipe?",
-      "Iron counts are so tough during second trig. Thanks for sharing!"
+      "Lentil soup with spinach is surprisingly good — my OB approved it!",
+      "Iron counts are so tough in second tri. Thanks for starting this thread."
     ],
     '3': [
-      "Thank you, I really needed to hear this today. 😭😭",
-      "We are all in this together, Mama."
+      "Thank you, I really needed to hear this today 😭",
+      "We are all in this together, Mama. You're doing amazing."
+    ],
+    '4': [
+      "Thank you for saying this out loud. PPD & PPA are so under-discussed.",
+      "Your courage in sharing this is helping so many of us."
     ]
   });
 
-  // Creator flows
   const [composeModal, setComposeModal] = useState<boolean>(false);
   const [newPostTitle, setNewPostTitle] = useState<string>('');
   const [newPostBody, setNewPostBody] = useState<string>('');
   const [newPostTag, setNewPostTag] = useState<string>('#NewMom');
-
-  // Inside-tab notifier toast
   const [commToast, setCommToast] = useState<string | null>(null);
 
   const triggerToast = (msg: string) => {
@@ -96,68 +106,46 @@ export default function Community() {
     setTimeout(() => setCommToast(null), 3000);
   };
 
-  // Upvote tally changer
   const handleVote = (id: string, dir: 'up' | 'down') => {
     setPosts(prev => prev.map(p => {
       if (p.id === id) {
         if (p.voted === dir) {
-          // undo vote
-          return {
-            ...p,
-            upvotes: dir === 'up' ? p.upvotes - 1 : p.upvotes + 1,
-            voted: undefined
-          };
+          return { ...p, upvotes: dir === 'up' ? p.upvotes - 1 : p.upvotes + 1, voted: undefined };
         } else {
-          // toggle or take vote
           let change = dir === 'up' ? 1 : -1;
-          if (p.voted) change *= 2; // double if flipping from down to up
-          return {
-            ...p,
-            upvotes: p.upvotes + change,
-            voted: dir
-          };
+          if (p.voted) change *= 2;
+          return { ...p, upvotes: p.upvotes + change, voted: dir };
         }
       }
       return p;
     }));
   };
 
-  // Toggle bookmarking saves
   const handleSaveToggle = (id: string) => {
     setPosts(prev => prev.map(p => {
       if (p.id === id) {
         const nextSave = !p.saved;
-        triggerToast(nextSave ? 'Post pinned to your favorites board! 📌' : 'Removed from favorites.');
+        triggerToast(nextSave ? 'Saved to your favorites! 📌' : 'Removed from favorites.');
         return { ...p, saved: nextSave };
       }
       return p;
     }));
   };
 
-  // Comment writer save
   const handleAddComment = () => {
     if (!commentText.trim() || !commentingPost) return;
     const postId = commentingPost.id;
-    setMockComments(prev => ({
-      ...prev,
-      [postId]: [...(prev[postId] || []), commentText]
-    }));
-    setPosts(prev => prev.map(p => {
-      if (p.id === postId) {
-        return { ...p, commentsCount: p.commentsCount + 1 };
-      }
-      return p;
-    }));
+    setMockComments(prev => ({ ...prev, [postId]: [...(prev[postId] || []), commentText] }));
+    setPosts(prev => prev.map(p => p.id === postId ? { ...p, commentsCount: p.commentsCount + 1 } : p));
     setCommentText('');
-    triggerToast("Your supportive comment was posted! 💬");
+    triggerToast("Comment posted! 💬");
   };
 
-  // Create new post handler
   const handleCreatePost = () => {
     if (!newPostTitle.trim() || !newPostBody.trim()) return;
     const newPost: CommunityPost = {
       id: Date.now().toString(),
-      author: 'You (Mama)',
+      author: 'You',
       avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBEBMY7u8T2mdht7kH40pthZPXn5q9BDHR8WSG0N5Usj_UHHeObXtfjsJp3MZa01wPswhv3yeGlyjgnYIRELbpNy7bSe0-JZ1xnedxvfp4_HeMiEeQvhlvHLFzCkFUYNFeTe8oUIOmaBW79HNytaq4fSqNsSxtqtH1DlfAXX3vtxaknmEXmTErIRxv1OM-f-izlD-Wozs-6oE9dXGtHxh7meyHX0ponn3wkN8L5ugDdv6YNp2Qf8avaj_LV5_IRe_ogHM7wH6A4c9P7',
       timeAgo: 'Just now',
       tag: newPostTag,
@@ -171,19 +159,17 @@ export default function Community() {
     setComposeModal(false);
     setNewPostTitle('');
     setNewPostBody('');
-    triggerToast("Discussion post broadcasted to MamaHub community! 📣");
+    triggerToast("Your post is live in the community! 📣");
   };
 
-  // Filter visible items
   const visiblePosts = posts.filter(p => {
     if (selectedTag === '#AllPosts') return true;
     return p.tag.toLowerCase() === selectedTag.toLowerCase();
   });
 
   return (
-    <div id="community-view" className="bg-[#f8f9ff] min-h-screen pb-28 text-slate-900 select-none">
+    <div id="community-view" className="bg-[#faf8ff] min-h-screen pb-28 text-slate-900 select-none">
       
-      {/* Toast elements */}
       <AnimatePresence>
         {commToast && (
           <motion.div 
@@ -199,26 +185,20 @@ export default function Community() {
       </AnimatePresence>
 
       {/* Header */}
-      <header className="w-full top-0 sticky z-40 bg-white shadow-sm flex justify-between items-center px-6 h-16 border-b border-violet-100/60">
-        <div className="flex items-center gap-4">
+      <header className="w-full top-0 sticky z-40 bg-white/95 backdrop-blur shadow-sm flex justify-between items-center px-6 h-16 border-b border-violet-100/60">
+        <div className="flex items-center gap-3">
           <img 
-            alt="Mama profile avatar" 
-            className="w-10 h-10 rounded-full object-cover border-2 border-violet-200" 
+            alt="Profile" 
+            className="w-8 h-8 rounded-full object-cover border-2 border-violet-200" 
             src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEBMY7u8T2mdht7kH40pthZPXn5q9BDHR8WSG0N5Usj_UHHeObXtfjsJp3MZa01wPswhv3yeGlyjgnYIRELbpNy7bSe0-JZ1xnedxvfp4_HeMiEeQvhlvHLFzCkFUYNFeTe8oUIOmaBW79HNytaq4fSqNsSxtqtH1DlfAXX3vtxaknmEXmTErIRxv1OM-f-izlD-Wozs-6oE9dXGtHxh7meyHX0ponn3wkN8L5ugDdv6YNp2Qf8avaj_LV5_IRe_ogHM7wH6A4c9P7"
           />
-          <span className="font-bold text-violet-700 font-extrabold select-none">MamaHub Community</span>
+          <span className="font-bold text-violet-700">MamaHub Community</span>
         </div>
         <div className="flex items-center gap-2">
-          <button 
-            onClick={() => triggerToast("Search module unlocked on premium servers! 🔎")}
-            className="p-2 rounded-full text-slate-500 hover:bg-slate-100 hover:text-slate-800 transition focus:outline-none"
-          >
+          <button onClick={() => triggerToast("Search coming soon! 🔎")} className="p-2 rounded-full text-slate-400 hover:bg-slate-100 transition">
             <Search className="w-5 h-5" />
           </button>
-          <button 
-            onClick={() => triggerToast("Everything is clear and welcoming. 🕊️")}
-            className="p-2 rounded-full text-slate-500 hover:bg-slate-100 hover:text-slate-800 transition focus:outline-none"
-          >
+          <button onClick={() => triggerToast("No new notifications 🕊️")} className="p-2 rounded-full text-slate-400 hover:bg-slate-100 transition">
             <Bell className="w-5 h-5" />
           </button>
         </div>
@@ -226,46 +206,39 @@ export default function Community() {
 
       <main className="max-w-md mx-auto px-6 py-6 space-y-6">
         
-        {/* Banner header tags */}
         <section className="space-y-4">
           <div className="flex justify-between items-end">
             <div>
-              <h2 className="text-xl font-bold tracking-tight text-slate-900 select-none">Community Sanctuary</h2>
-              <p className="text-xs text-slate-500 mt-0.5">Uniting caretakers with radical calm and supportive dignity.</p>
+              <h2 className="text-xl font-bold tracking-tight text-slate-900">For Mamas, By Mamas</h2>
+              <p className="text-xs text-slate-500 mt-0.5">A warm, supportive space for every stage of the journey.</p>
             </div>
-            
-            {/* Trending/Latest caps switcher */}
-            <div className="flex bg-[#e3e1ed]/50 p-1 rounded-full text-[10px] font-bold">
+            <div className="flex bg-violet-50 p-1 rounded-full text-[10px] font-bold">
               <button 
-                id="tab-trending"
                 onClick={() => setFeedMode('trending')}
-                className={`px-4 py-2 rounded-full transition-colors ${feedMode === 'trending' ? 'bg-violet-600 text-white shadow-sm' : 'text-[#4a4455]'}`}
+                className={`px-3 py-1.5 rounded-full transition-colors ${feedMode === 'trending' ? 'bg-violet-600 text-white shadow-sm' : 'text-slate-500'}`}
               >
                 Trending
               </button>
               <button 
-                id="tab-latest"
                 onClick={() => setFeedMode('latest')}
-                className={`px-4 py-2 rounded-full transition-colors ${feedMode === 'latest' ? 'bg-violet-600 text-white shadow-sm' : 'text-[#4a4455]'}`}
+                className={`px-3 py-1.5 rounded-full transition-colors ${feedMode === 'latest' ? 'bg-violet-600 text-white shadow-sm' : 'text-slate-500'}`}
               >
                 Latest
               </button>
             </div>
           </div>
 
-          {/* Horizontal category slider chips */}
-          <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-none" id="horizontal-chips-scroller">
+          <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
             {tags.map((t) => {
-              const acts = selectedTag === t;
+              const active = selectedTag === t;
               return (
                 <button
                   key={t}
-                  id={`chip-tag-${t.replace('#', '')}`}
                   onClick={() => setSelectedTag(t)}
                   className={`flex-shrink-0 px-4 py-2 rounded-full text-xs font-bold transition-all ${
-                    acts 
+                    active 
                       ? 'bg-violet-600 text-white shadow-sm' 
-                      : 'bg-[#e3e1ed]/30 text-violet-700 hover:bg-violet-50'
+                      : 'bg-violet-50 text-violet-700 hover:bg-violet-100'
                   }`}
                 >
                   {t}
@@ -275,169 +248,152 @@ export default function Community() {
           </div>
         </section>
 
-        {/* Discussions posts list */}
-        <section className="space-y-5" id="discussions-feed">
-          {visiblePosts.map((p) => {
+        <section className="space-y-4">
+          {visiblePosts.length === 0 ? (
+            <div className="py-16 text-center space-y-3">
+              <div className="text-4xl">🌸</div>
+              <p className="text-slate-500 text-sm font-medium">No posts in this category yet.</p>
+              <p className="text-slate-400 text-xs">Be the first to start the conversation!</p>
+            </div>
+          ) : visiblePosts.map((p) => {
             const hasUpvoted = p.voted === 'up';
             const hasDownvoted = p.voted === 'down';
 
             return (
               <article 
                 key={p.id}
-                id={`post-card-${p.id}`}
-                className="bg-white p-5 rounded-2xl border border-violet-100/50 shadow-sm transition hover:shadow-md"
+                className="bg-white p-5 rounded-2xl border border-violet-100/50 shadow-sm hover:shadow-md transition"
               >
                 <div className="flex gap-3">
-                  
-                  {/* Upvoter button left strip (mimicking user mockup) */}
-                  <div className="flex flex-col items-center justify-start gap-1 bg-slate-50 rounded-full py-2 px-1 w-8 h-fit self-start">
+                  {/* Vote strip */}
+                  <div className="flex flex-col items-center justify-start gap-1 bg-violet-50 rounded-2xl py-2 px-1 w-9 h-fit self-start">
                     <button 
                       onClick={() => handleVote(p.id, 'up')}
-                      className={`p-1 rounded-full transition-colors ${hasUpvoted ? 'text-violet-700 bg-violet-50 scale-105' : 'text-slate-400 hover:text-violet-600'}`}
+                      className={`p-1 rounded-full transition-colors ${hasUpvoted ? 'text-violet-700' : 'text-slate-400 hover:text-violet-600'}`}
                     >
                       <ArrowUp className="w-4 h-4" />
                     </button>
                     <span className="text-xs font-mono font-bold text-slate-700">{p.upvotes}</span>
                     <button 
                       onClick={() => handleVote(p.id, 'down')}
-                      className={`p-1 rounded-full transition-colors ${hasDownvoted ? 'text-rose-600 bg-rose-50 scale-105' : 'text-slate-400 hover:text-rose-500'}`}
+                      className={`p-1 rounded-full transition-colors ${hasDownvoted ? 'text-rose-600' : 'text-slate-400 hover:text-rose-500'}`}
                     >
                       <ArrowDown className="w-4 h-4" />
                     </button>
                   </div>
 
-                  {/* Post Details container */}
+                  {/* Post content */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-2 text-[11px]">
-                      <img 
-                        src={p.avatar} 
-                        alt="Author avatar" 
-                        className="w-5 h-5 rounded-full object-cover border"
-                      />
-                      <span className="font-extrabold text-[#121c28]">{p.author}</span>
-                      <span className="text-slate-400">• {p.timeAgo} in</span>
-                      <span className="font-extrabold text-violet-700">{p.tag}</span>
+                      <img src={p.avatar} alt={p.author} className="w-5 h-5 rounded-full object-cover border" />
+                      <span className="font-extrabold text-slate-800">{p.author}</span>
+                      <span className="text-slate-400">· {p.timeAgo}</span>
+                      <span className="font-bold text-violet-600">{p.tag}</span>
                     </div>
 
-                    <h3 className="text-sm font-extrabold text-slate-800 leading-snug mb-2 pr-1 line-clamp-2">
+                    <h3 className="text-sm font-extrabold text-slate-800 leading-snug mb-2 line-clamp-2">
                       {p.title}
                     </h3>
                     
                     {p.image && (
                       <div className="rounded-xl overflow-hidden aspect-[16/9] bg-violet-50 mb-3 border border-violet-100">
-                        <img 
-                          src={p.image} 
-                          alt="Post decorative meal" 
-                          className="w-full h-full object-cover"
-                        />
+                        <img src={p.image} alt="Post image" className="w-full h-full object-cover" />
                       </div>
                     )}
 
-                    <p className="text-xs text-slate-600 leading-relaxed line-clamp-3 mb-4">
+                    <p className="text-xs text-slate-500 leading-relaxed line-clamp-3 mb-4">
                       {p.body}
                     </p>
 
-                    {/* Action buttons list bar */}
-                    <div className="flex items-center gap-4 text-xs font-bold text-slate-500">
+                    <div className="flex items-center gap-4 text-xs font-bold text-slate-400">
                       <button 
                         onClick={() => setCommentingPost(p)}
                         className="flex items-center gap-1.5 hover:text-violet-700 transition"
                       >
                         <MessageSquare className="w-4 h-4" />
-                        <span>{p.commentsCount} Comments</span>
+                        <span>{p.commentsCount}</span>
                       </button>
                       <button 
                         onClick={() => handleSaveToggle(p.id)}
                         className={`flex items-center gap-1.5 hover:text-violet-700 transition ${p.saved ? 'text-violet-700' : ''}`}
                       >
-                        <Bookmark className={`w-4 h-4 ${p.saved ? 'fill-violet-300 text-violet-700' : ''}`} />
+                        <Bookmark className={`w-4 h-4 ${p.saved ? 'fill-violet-200 text-violet-700' : ''}`} />
                         <span>{p.saved ? 'Saved' : 'Save'}</span>
                       </button>
                       <button 
                         className="flex items-center gap-1.5 hover:text-violet-700 transition"
-                        onClick={() => triggerToast("Link copied to clipboard! Share with other mamas. 🔗")}
+                        onClick={() => triggerToast("Link copied! 🔗")}
                       >
                         <Share2 className="w-4 h-4" />
                         <span>Share</span>
                       </button>
                     </div>
-
                   </div>
                 </div>
               </article>
             );
           })}
         </section>
-
       </main>
 
-      {/* Write custom post FLOATING CIRCLE button */}
+      {/* Compose FAB */}
       <button 
-        id="btn-compose-query"
         onClick={() => setComposeModal(true)}
-        className="fixed bottom-24 right-6 w-14 h-14 bg-violet-700 text-white rounded-full shadow-xl flex items-center justify-center hover:scale-105 active:scale-95 transition z-40 cursor-pointer border border-violet-500 group"
+        className="fixed bottom-24 right-6 w-14 h-14 bg-violet-700 text-white rounded-full shadow-xl flex items-center justify-center hover:scale-105 active:scale-95 transition z-40"
       >
         <PenTool className="w-6 h-6" />
       </button>
 
-      {/* Comments Drawer overlay modal */}
+      {/* Comments drawer */}
       <AnimatePresence>
         {commentingPost && (
-          <div className="fixed inset-0 z-50 flex items-end justify-center bg-slate-950/40 backdrop-blur-sm p-4">
+          <div className="fixed inset-0 z-50 flex items-end justify-center bg-slate-950/40 backdrop-blur-sm">
             <motion.div 
               initial={{ y: 300, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 300, opacity: 0 }}
-              className="bg-white p-6 rounded-t-[2.5rem] max-w-md w-full relative space-y-4 shadow-2xl h-[70vh] flex flex-col justify-between border-t border-violet-100"
+              className="bg-white rounded-t-3xl max-w-md w-full h-[70vh] flex flex-col shadow-2xl border-t border-violet-100"
             >
-              <div className="flex justify-between items-center border-b border-slate-100 pb-3">
+              <div className="flex justify-between items-center px-6 pt-5 pb-3 border-b border-slate-100">
                 <div>
-                  <h4 className="font-extrabold text-sm text-[#121c28]">Comments board</h4>
-                  <p className="text-[10px] text-slate-400 tracking-tight line-clamp-1">on: {commentingPost.title}</p>
+                  <h4 className="font-extrabold text-sm text-slate-900">Comments</h4>
+                  <p className="text-[10px] text-slate-400 line-clamp-1 mt-0.5">{commentingPost.title}</p>
                 </div>
-                <button 
-                  id="btn-close-comments"
-                  className="p-1 rounded-full text-slate-500 hover:bg-slate-100"
-                  onClick={() => setCommentingPost(null)}
-                >
+                <button onClick={() => setCommentingPost(null)} className="p-1 rounded-full text-slate-400 hover:bg-slate-100">
                   <X className="w-5 h-5" />
                 </button>
               </div>
 
-              {/* Comments Feed Area */}
-              <div className="flex-grow overflow-y-auto space-y-3 py-2 text-xs">
+              <div className="flex-grow overflow-y-auto px-6 py-4 space-y-3 text-xs">
                 {(mockComments[commentingPost.id] || []).length > 0 ? (
                   (mockComments[commentingPost.id] || []).map((c, i) => (
-                    <div key={i} className="p-3.5 bg-slate-50 rounded-xl space-y-1">
-                      <div className="flex justify-between font-bold text-slate-700 text-[10px]">
-                        <span>Caring Mama</span>
-                        <span className="font-light">Just now</span>
+                    <div key={i} className="p-3.5 bg-violet-50 rounded-xl space-y-1">
+                      <div className="flex justify-between font-bold text-slate-600 text-[10px]">
+                        <span>Community Mama</span>
+                        <span className="font-normal text-slate-400">just now</span>
                       </div>
-                      <p className="text-slate-600 leading-relaxed">{c}</p>
+                      <p className="text-slate-700 leading-relaxed">{c}</p>
                     </div>
                   ))
                 ) : (
-                  <div className="h-full flex flex-col items-center justify-center text-center text-slate-400 space-y-1">
+                  <div className="h-full flex flex-col items-center justify-center text-center text-slate-400 space-y-2">
                     <MessageSquare className="w-8 h-8 text-slate-300" />
-                    <p>Be the first to share support and advice!</p>
+                    <p className="text-sm font-medium">Be the first to share support!</p>
                   </div>
                 )}
               </div>
 
-              {/* Compose comment input row */}
-              <div className="flex items-center gap-2 pt-3 border-t border-slate-100">
+              <div className="flex items-center gap-2 px-6 py-4 border-t border-slate-100">
                 <input
-                  id="input-comment-box"
                   type="text"
                   value={commentText}
                   onChange={(e) => setCommentText(e.target.value)}
-                  placeholder="Type a supportive mama response..."
-                  className="flex-grow h-12 bg-[#e5eeff]/40 border border-violet-100 rounded-xl px-4 text-xs focus:ring-1 focus:ring-violet-600 focus:outline-none"
+                  placeholder="Write something kind..."
+                  className="flex-grow h-11 bg-violet-50 border border-violet-100 rounded-xl px-4 text-xs focus:ring-2 focus:ring-violet-400 focus:outline-none"
                 />
                 <button 
-                  id="btn-submit-comment"
                   onClick={handleAddComment}
-                  className="w-12 h-12 rounded-xl bg-violet-700 hover:bg-violet-800 text-white flex items-center justify-center shrink-0"
+                  className="w-11 h-11 rounded-xl bg-violet-700 hover:bg-violet-800 text-white flex items-center justify-center shrink-0 transition"
                 >
                   <Send className="w-4 h-4" />
                 </button>
@@ -447,7 +403,7 @@ export default function Community() {
         )}
       </AnimatePresence>
 
-      {/* Compose discussion post overlay */}
+      {/* Compose post modal */}
       <AnimatePresence>
         {composeModal && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-slate-950/35 backdrop-blur-md">
@@ -455,27 +411,22 @@ export default function Community() {
               initial={{ scale: 0.92, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
-              className="bg-white p-7 rounded-3xl max-w-sm w-full space-y-4 shadow-2xl relative border border-violet-100"
+              className="bg-white p-7 rounded-3xl max-w-sm w-full space-y-4 shadow-2xl border border-violet-100"
             >
               <div className="flex justify-between items-center">
-                <h3 className="font-extrabold text-[#121c28]">Spark a Discussion</h3>
-                <button 
-                  id="btn-close-composer"
-                  onClick={() => setComposeModal(false)}
-                  className="p-1 rounded-full text-slate-500 hover:bg-slate-150"
-                >
+                <h3 className="font-extrabold text-slate-900">Start a Discussion</h3>
+                <button onClick={() => setComposeModal(false)} className="p-1 rounded-full text-slate-400 hover:bg-slate-100">
                   <X className="w-5 h-5" />
                 </button>
               </div>
 
               <div className="space-y-3 text-xs">
-                <div className="space-y-1">
-                  <label className="font-bold text-violet-700 uppercase tracking-wide">Category Circle</label>
+                <div className="space-y-1.5">
+                  <label className="font-bold text-violet-700 uppercase tracking-wide">Topic</label>
                   <select 
-                    id="select-post-tag"
                     value={newPostTag}
                     onChange={(e) => setNewPostTag(e.target.value)}
-                    className="w-full h-11 bg-[#e5eeff]/40 border border-violet-100 rounded-xl px-3 outline-none"
+                    className="w-full h-11 bg-violet-50 border border-violet-100 rounded-xl px-3 text-sm outline-none focus:ring-2 focus:ring-violet-400"
                   >
                     <option value="#NewMom">#NewMom</option>
                     <option value="#PregnancyDiets">#PregnancyDiets</option>
@@ -485,49 +436,45 @@ export default function Community() {
                   </select>
                 </div>
 
-                <div className="space-y-1">
-                  <label className="font-bold text-violet-700 uppercase tracking-wide">Headline Question</label>
+                <div className="space-y-1.5">
+                  <label className="font-bold text-violet-700 uppercase tracking-wide">Title</label>
                   <input 
-                    id="input-post-title"
                     type="text"
                     value={newPostTitle}
                     onChange={(e) => setNewPostTitle(e.target.value)}
                     placeholder="E.g., Any advice on sleep regressions?"
-                    className="w-full h-11 bg-[#e5eeff]/40 border border-violet-100 rounded-xl px-3 outline-none"
+                    className="w-full h-11 bg-violet-50 border border-violet-100 rounded-xl px-3 text-sm outline-none focus:ring-2 focus:ring-violet-400"
                   />
                 </div>
 
-                <div className="space-y-1">
-                  <label className="font-bold text-violet-700 uppercase tracking-wide">Details</label>
+                <div className="space-y-1.5">
+                  <label className="font-bold text-violet-700 uppercase tracking-wide">Your Story</label>
                   <textarea 
-                    id="textarea-post-body"
                     rows={4}
                     value={newPostBody}
                     onChange={(e) => setNewPostBody(e.target.value)}
-                    placeholder="Describe your situation or context..."
-                    className="w-full bg-[#e5eeff]/40 border border-violet-100 rounded-xl p-3 outline-none resize-none"
+                    placeholder="Share what's on your mind — this is a safe space."
+                    className="w-full bg-violet-50 border border-violet-100 rounded-xl p-3 text-sm outline-none resize-none focus:ring-2 focus:ring-violet-400"
                   />
                 </div>
               </div>
 
               <button 
-                id="btn-broadcaster"
                 disabled={!newPostTitle.trim() || !newPostBody.trim()}
                 onClick={handleCreatePost}
-                className={`w-full py-3.5 font-bold rounded-xl text-xs flex justify-center items-center gap-1 shadow-md ${
+                className={`w-full py-3.5 font-bold rounded-xl text-sm flex justify-center items-center gap-2 shadow-md transition ${
                   newPostTitle.trim() && newPostBody.trim() 
                     ? 'bg-violet-700 text-white hover:bg-violet-800' 
-                    : 'bg-slate-200 text-slate-400 pointer-events-none'
+                    : 'bg-slate-100 text-slate-400 pointer-events-none'
                 }`}
               >
-                <Send className="w-3.5 h-3.5" />
-                <span>Publish Post</span>
+                <Send className="w-4 h-4" />
+                <span>Post to Community</span>
               </button>
             </motion.div>
           </div>
         )}
       </AnimatePresence>
-
     </div>
   );
 }

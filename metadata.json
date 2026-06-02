@@ -1,0 +1,6 @@
+{
+  "name": "MamaHub",
+  "description": "A supportive parenting companion for expectant and new mamas, featuring milestone tracking, expert wellness guides, and interactive first-aid simulators.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
